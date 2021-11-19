@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Terratype.Indexers.Sql.Persistance.Data.Migrations.Dto.Entry;
 
 namespace Terratype.Indexers.Sql.Persistance.Data.Dto
 {
-	internal class Entry : Migrations.Dto.Entry.Entry100
+	public class Entry : Entry100
 	{
 	}
 }

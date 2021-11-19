@@ -1,53 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terratype.Indexers.Sql.Persistance.Data.Dto;
 using Umbraco.Core.Persistence;
+using Umbraco.Core.Scoping;
 
 namespace Terratype.Indexers.Sql.Persistance.Context
 {
-	internal class AncestorContext : DBContext
-	{
-		public void Write(Guid ancestor, string entryKey, DateTime lastModified)
-		{
-			var record = new Data.Dto.Ancestor
-			{
-				UmbracoNode = ancestor,
-				Entry = entryKey,
-				LastModified = lastModified
-			};
+  public class AncestorContext : IAncestorContext
+  {
+    private IScopeProvider _scopeProvider;
+    private const string TableName = nameof(Terratype) + nameof(Indexers) + nameof(Sql) + nameof(Data.Dto.Entry);
 
-			if (Database.SingleOrDefault<Data.Dto.Ancestor>(
-				"WHERE " +
-				nameof(Data.Dto.Ancestor.UmbracoNode) + " = @0 AND " +
-				nameof(Data.Dto.Ancestor.Entry) + " = @1",
-				ancestor, entryKey) == null)
-			{
-				Database.Insert(record);
-			}
-			else
-			{
-				Database.Update(record);
-			}
-		}
+    public AncestorContext(IScopeProvider scopeProvider)
+    {
+      _scopeProvider = scopeProvider;
+    }
 
-		public IEnumerable<Data.Dto.Entry> List(Guid ancestor)
-		{
-			return Database.Query<Data.Dto.Entry>(new Umbraco.Core.Persistence.Sql().Select("*").From<Data.Dto.Entry>(Syntax).Where<Data.Dto.Ancestor>(x => x.UmbracoNode == ancestor, Syntax));
-		}
+    public void Write(Guid ancestor, string entryKey, DateTime lastModified)
+    {
+      using (var scope = _scopeProvider.CreateScope())
+      {
+        var db = scope.Database;
+        var record = new Data.Dto.Ancestor
+        {
+          UmbracoNode = ancestor,
+          Entry = entryKey,
+          LastModified = lastModified
+        };
+        if (db.SingleOrDefault<Ancestor>(
+        "WHERE " +
+        nameof(Ancestor.UmbracoNode) + " = @0 AND " +
+        nameof(Ancestor.Entry) + " = @1",
+        ancestor, entryKey) == null)
+        {
+          db.Insert(record);
+        }
+        else
+        {
+          db.Update(record);
+        }
+        scope.Complete();
+      }
+    }
 
-		public void Delete(Guid ancestor, DateTime? beforeThisDate = null)
-		{
-			var sql = new Umbraco.Core.Persistence.Sql().Where<Data.Dto.Ancestor>(x => x.UmbracoNode == ancestor, Syntax);
-			if (beforeThisDate != null)
-			{
-				sql.Where<Data.Dto.Ancestor>(x => x.LastModified < beforeThisDate, Syntax);
-			}
+    public IEnumerable<Entry> List(Guid ancestor)
+    {
+      using (var scope = _scopeProvider.CreateScope())
+      {
+        var db = scope.Database;
+        return db.Query<Entry>()
+          .Where(x => x.UmbracoNode == ancestor)
+          .ToList();
+      }
+    }
 
-			Database.Delete<Data.Dto.Ancestor>(sql);
-		}
+    public void Delete(Guid ancestor, DateTime? beforeThisDate = null)
+    {
 
-		public void Delete(string entryKey)
-		{
-			Database.Delete<Data.Dto.Ancestor>(new Umbraco.Core.Persistence.Sql().Where<Data.Dto.Ancestor>(x => x.Entry == entryKey, Syntax));
-		}
-	}
+      using (var scope = _scopeProvider.CreateScope())
+      {
+        var db = scope.Database;
+        var currentItem = db.Query<Entry>()
+          .FirstOrDefault(a => a.UmbracoNode == ancestor && (beforeThisDate == null || a.LastModified < beforeThisDate));
+
+        if (currentItem == null)
+        {
+          throw new ArgumentNullException("record does not exist");
+        }
+        var result = scope.Database.Delete(currentItem);
+        scope.Complete();
+      }
+    }
+
+    public void Delete(string entryKey)
+    {
+      using (var scope = _scopeProvider.CreateScope())
+      {
+        var db = scope.Database;
+        var currentItem = db.Query<Ancestor>()
+          .FirstOrDefault(a => a.Entry == entryKey);
+
+        if (currentItem == null)
+        {
+          throw new ArgumentNullException("record does not exist");
+        }
+        var result = scope.Database.Delete(currentItem);
+        scope.Complete();
+      }
+    }
+  }
 }

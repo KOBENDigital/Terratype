@@ -276,17 +276,18 @@
   <ItemGroup>
     <Compile Include="Persistance\Context\EntryContext.cs" />
     <Compile Include="Persistance\Context\AncestorContext.cs" />
-    <Compile Include="Persistance\Context\DBContext.cs" />
+    <Compile Include="Persistance\Context\DbContextExtention.cs" />
+    <Compile Include="Persistance\Context\IAncestorContext.cs" />
+    <Compile Include="Persistance\Context\IEntryContext.cs" />
     <Compile Include="Persistance\Data\Dto\Entry.cs" />
     <Compile Include="Persistance\Data\Dto\Ancestor.cs" />
     <Compile Include="Persistance\Data\Migrations\Dto\Entry\Entry100.cs" />
     <Compile Include="Persistance\Data\Migrations\Dto\Ancestor\Ancestor100.cs" />
     <Compile Include="Persistance\Data\Migrations\Dto\UmbracoNode\UmbracoNode100.cs" />
-    <Compile Include="Persistance\Data\Migrations\Migration.cs" />
-    <Compile Include="Persistance\Data\Migrations\Versions\Migration100.cs" />
     <Compile Include="Register.cs" />
     <Compile Include="SqlIndexer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Persistance\Data\Migrations\SqlMigrationPlan.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

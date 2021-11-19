@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terratype.Indexer;
@@ -8,67 +9,75 @@ using Umbraco.Core.Logging;
 
 namespace Terratype.Indexers
 {
-	public class SqlIndexer : IndexerBase, IAncestorSearch<AncestorSearchRequest>
-	{
-		public const string _Id = "Terratype.Indexer.Sql";
-		public override string Id => _Id;
+  public class SqlIndexer : IndexerBase, IAncestorSearch<AncestorSearchRequest>
+  {
+    private readonly ILogger _logger;
+    private readonly IAncestorContext _ancestorContext;
+    private readonly IEntryContext _entryContext;
 
-		public override bool MasterOnly => true;
+    public SqlIndexer(ILogger logger, IEntryContext entryContext, IAncestorContext ancestorContext)
+    {
+      _logger = logger;
+      _entryContext = entryContext;
+      _ancestorContext = ancestorContext;
+    }
+    public const string _Id = "Terratype.Indexer.Sql";
+    public override string Id => _Id;
 
-		public override bool Sync(IEnumerable<Guid> remove, IEnumerable<Entry> add)
-		{
-			var ancestorDb = new AncestorContext();
-			var entryDb = new EntryContext();
+    public override bool MasterOnly => true;
 
-			try
-			{
-				entryDb.Database.BeginTransaction();
+    public override string Name => throw new NotImplementedException();
 
-				var now = DateTime.UtcNow;
+    public override string Description => throw new NotImplementedException();
 
-				if (add != null)
-				{
-					foreach (var entry in add)
-					{
-						entryDb.Write(entry.Key, entry.Id, entry.Map, now);
-						ancestorDb.Write(entry.Id, entry.Key, now);
-						foreach (var ancestor in entry.Ancestors)
-						{
-							ancestorDb.Write(ancestor, entry.Key, now);
-						}
-					}
-				}
+    public override bool Sync(IEnumerable<Guid> remove, IEnumerable<Entry> add)
+    {
+      try
+      {
 
-				if (remove != null)
-				{
-					foreach (var guid in remove)
-					{
-						ancestorDb.Delete(guid, now);
-						entryDb.Delete(guid, now);
-					}
-				}
-				entryDb.Database.CompleteTransaction();
-				return true;
-			}
-			catch (Exception ex)
-			{
-				LogHelper.Error<SqlIndexer>($"Error trying to sync content with indexer", ex);
-			}
+        var now = DateTime.UtcNow;
 
-			try
-			{
-				entryDb.Database.AbortTransaction();
-			}
-			catch (Exception)
-			{
-				//	Just swallow the error, as the previous catch above would have logged it
-			}
-			return false;
-		}
+        if (add != null)
+        {
+          foreach (var entry in add)
+          {
+            _entryContext.Write(entry.Key, entry.Id, entry.Map, now);
+            _ancestorContext.Write(entry.Id, entry.Key, now);
+            foreach (var ancestor in entry.Ancestors)
+            {
+              _ancestorContext.Write(ancestor, entry.Key, now);
+            }
+          }
+        }
 
-		public IEnumerable<Models.Model> Execute(AncestorSearchRequest request)
-		{
-			return new AncestorContext().List(request.Ancestor).Select(x => new Models.Model(x.Map));
-		}
-	}
+        if (remove != null)
+        {
+          foreach (var guid in remove)
+          {
+            _ancestorContext.Delete(guid, now);
+            _entryContext.Delete(guid, now);
+          }
+        }
+        return true;
+      }
+      catch (Exception ex)
+      {
+        _logger.Error<SqlIndexer>($"Error trying to sync content with indexer", ex);
+      }
+
+      return false;
+    }
+
+    public IEnumerable<IMap> Execute(AncestorSearchRequest request)
+    {
+      return _ancestorContext
+        .List(request.Ancestor)
+        .Select(x => ToMap(x.Map));
+    }
+
+    private IMap ToMap(string map)
+    {
+      return JsonConvert.DeserializeObject<IMap>(map);
+    }
+  }
 }

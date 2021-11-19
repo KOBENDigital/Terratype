@@ -1,52 +1,54 @@
-﻿using ClientDependency.Core.Logging;
+﻿using Terratype.Indexers.Sql.Persistance.Context;
+using Terratype.Indexers.Sql.Persistance.Data.Migrations;
 using Umbraco.Core;
 using Umbraco.Core.Composing;
+using Umbraco.Core.Logging;
 using Umbraco.Core.Migrations;
+using Umbraco.Core.Migrations.Upgrade;
 using Umbraco.Core.Scoping;
 using Umbraco.Core.Services;
 
 namespace Terratype.Indexers.Lucene
 {
-	[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
-	public class Register : IUserComposer
-	{
-		IScopeProvider ScopeProvider;
-		IMigrationBuilder MigrationBuilder;
-		IKeyValueService KeyValueService;
-		ILogger Logger;
+  [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+  public class Register : IUserComposer
+  {
+    public void Compose(Composition composition)
+    {
+      var container = new LightInject.ServiceContainer();
+      container.Register<Indexer.IndexerBase, SqlIndexer>(SqlIndexer._Id);
+      composition.Register<IEntryContext, EntryContext>(Lifetime.Scope);
+      composition.Register<IAncestorContext, AncestorContext>(Lifetime.Scope);
+    }
+  }
 
-		public Register(IScopeProvider scopeProvider, IMigrationBuilder migrationBuilder, IKeyValueService keyValueService, ILogger logger)
-		{
-			ScopeProvider = scopeProvider;
-			MigrationBuilder = migrationBuilder;
-			KeyValueService = keyValueService;
-			Logger = logger;
-		}
+  public class SqlComponent : IComponent
+  {
+    private IScopeProvider _scopeProvider;
+    private IMigrationBuilder _migrationBuilder;
+    private IKeyValueService _keyValueService;
+    private ILogger _logger;
 
-		public void Compose(Composition composition)
-		{
-			var container = new LightInject.ServiceContainer();
-			container.Register<Indexer.IndexerBase, SqlIndexer>(SqlIndexer._Id);
+    public SqlComponent(IScopeProvider scopeProvider, IMigrationBuilder migrationBuilder, IKeyValueService keyValueService, ILogger logger)
+    {
+      _scopeProvider = scopeProvider;
+      _migrationBuilder = migrationBuilder;
+      _keyValueService = keyValueService;
+      _logger = logger;
+    }
 
-			new Sql.Persistance.Data.Migrations.Migration().RunMigrations(applicationContext.DatabaseContext.SqlSyntax,
-				applicationContext.Services.MigrationEntryService, applicationContext.ProfilingLogger.Logger);
-		}
-	}
+    public void Initialize()
+    {
 
-	public class MyProjectUpgradeComponent : UmbracoUserComponent
-	{
-		public override Initialize(IScopeProvider scopeProvider, IMigrationBuilder migrationBuilder, IKeyValueService keyValueService, ILogger logger)
-		{
-			var plan = new MigrationPlan("MyProject");
-			plan.From(string.Empty)
-				.To<Migration1>("state-1")
-				.To<Migration2>("state-2")
-				.To<Migration3>("state-3");
+      var migrationPlan = new MigrationPlan(nameof(Terratype));
+      migrationPlan.From(string.Empty)
+          .To<SqlMigrationPlan>($"1.0.0_{nameof(Terratype) + nameof(Indexer) + nameof(Sql)}");
+      var upgrader = new Upgrader(migrationPlan);
+      upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
+    }
 
-			var upgrader = new Upgrader(plan);
-			upgrader.Execute(scopeProvider, migrationBuilder, keyValueService, logger);
-		}
-	}
+    public void Terminate()
+    {
+    }
+  }
 }
-
-
