@@ -7,16 +7,16 @@ using Newtonsoft.Json.Linq;
 using Terratype.CoordinateSystems;
 using Terratype.Labels;
 using Terratype.Providers;
-using Umbraco.Core.Services.Implement;
+using Umbraco.Core.Services;
 
 namespace Terratype.Controllers
 {
 	[Umbraco.Web.Mvc.PluginController("terratype")]
 	public class AjaxController : Umbraco.Web.Editors.UmbracoAuthorizedJsonController
 	{
-		DataTypeService DataTypeService;
+		IDataTypeService DataTypeService;
 
-		public AjaxController(DataTypeService dataTypeService)
+		public AjaxController(IDataTypeService dataTypeService)
 		{
 			DataTypeService = dataTypeService;
 		}
