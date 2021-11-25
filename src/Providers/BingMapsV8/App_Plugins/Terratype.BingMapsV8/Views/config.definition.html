@@ -7,7 +7,7 @@
             </small>
         </label>
         <div class="controls">
-            <select id="terratype_{{identifier}}_bingmapsv8_version" ng-model="config().provider.version" class="umb-editor" ng-change="vm().provider.events.versionChange()">
+            <select id="terratype_{{identifier}}_bingmapsv8_version" ng-model="config().provider.version" class="umb-property-editor" ng-change="vm().provider.events.versionChange()">
                 <option value="experimental" terratype-translate="@terratypeBingMapsV8ConfigDefinition_versionExperimental"></option>
                 <option value="release" terratype-translate="@terratypeBingMapsV8ConfigDefinition_versionRelease"></option>
                 <option value="frozen" terratype-translate="@terratypeBingMapsV8ConfigDefinition_versionFrozen"></option>
@@ -22,7 +22,7 @@
             </small>
         </label>
         <div class="controls">
-            <input id="terratype_{{identifier}}_bingmapsv8_apikey" list="terratype_{{identifier}}_bingmapsv8_apikeys" type="text" ng-model="config().provider.apiKey" class="umb-editor umb-textstring textstring" localize="placeholder" placeholder="@terratypeBingMapsV8ConfigDefinition_apiKeyPlaceholder" spellcheck="false" ng-change="vm().status.reload = true" />
+            <input id="terratype_{{identifier}}_bingmapsv8_apikey" list="terratype_{{identifier}}_bingmapsv8_apikeys" type="text" ng-model="config().provider.apiKey" class="umb-property-editor umb-textstring textstring" localize="placeholder" placeholder="@terratypeBingMapsV8ConfigDefinition_apiKeyPlaceholder" spellcheck="false" ng-change="vm().status.reload = true" />
             <datalist id="terratype_{{identifier}}_bingmapsv8_apikeys">
                 <option ng-repeat="x in vm().provider.events.httpCalls.apiKey.values" value="{{x}}"></option>
             </datalist>
@@ -70,7 +70,7 @@
             </small>
         </label>
         <div class="controls">
-            <select id="terratype_{{identifier}}_bingmapsv8_language" ng-model="config().provider.language" class="umb-editor" ng-change="vm().provider.events.languageChange()">
+            <select id="terratype_{{identifier}}_bingmapsv8_language" ng-model="config().provider.language" class="umb-property-editor" ng-change="vm().provider.events.languageChange()">
                 <option value=""><localize key="terratypeBingMapsV8ConfigDefinition_languageUseDefault">[Use Umbraco]</localize></option>
                 <option value="ar-EG"><localize key="terratypeBingMapsV8ConfigDefinition_languageAR">Arabic (العربية)</localize></option>
                 <option value="eu-ES"><localize key="terratypeBingMapsV8ConfigDefinition_languageEU">Basque (euskara, euskera)</localize></option>

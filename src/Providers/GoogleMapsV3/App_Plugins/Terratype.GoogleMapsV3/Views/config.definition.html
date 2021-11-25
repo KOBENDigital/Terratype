@@ -7,7 +7,7 @@
 			</small>
 		</label>
 		<div class="controls">
-			<select id="terratype_{{identifier}}_googlemapv3_version" ng-model="config().provider.version" class="umb-editor" ng-change="vm().provider.events.versionChange()">
+			<select id="terratype_{{identifier}}_googlemapv3_version" ng-model="config().provider.version" class="umb-property-editor" ng-change="vm().provider.events.versionChange()">
 				<option value="3" terratype-translate="@terratypeGoogleMapsV3ConfigDefinition_version3"></option>
 				<option value="3.exp" terratype-translate="@terratypeGoogleMapsV3ConfigDefinition_version3exp"></option>
 				<option value="3.38" terratype-translate="@terratypeGoogleMapsV3ConfigDefinition_version338"></option>
@@ -60,7 +60,7 @@
 			</small>
 		</label>
 		<div class="controls">
-			<input id="terratype_{{identifier}}_googlemapv3_apikey" list="terratype_{{identifier}}_googlemapv3_apikeys" type="text" ng-model="config().provider.apiKey" class="umb-editor umb-textstring textstring" localize="placeholder" placeholder="@terratypeGoogleMapsV3ConfigDefinition_apiKeyPlaceholder" spellcheck="false" ng-change="vm().status.reload = true" />
+			<input id="terratype_{{identifier}}_googlemapv3_apikey" list="terratype_{{identifier}}_googlemapv3_apikeys" type="text" ng-model="config().provider.apiKey" class="umb-property-editor umb-textstring textstring" localize="placeholder" placeholder="@terratypeGoogleMapsV3ConfigDefinition_apiKeyPlaceholder" spellcheck="false" ng-change="vm().status.reload = true" />
 			<datalist id="terratype_{{identifier}}_googlemapv3_apikeys">
 				<option ng-repeat="x in vm().provider.events.httpCalls.apiKey.values" value="{{x}}"></option>
 			</datalist>
@@ -108,7 +108,7 @@
 			</small>
 		</label>
 		<div class="controls">
-			<select id="terratype_{{identifier}}_googlemapv3_language" ng-model="config().provider.language" class="umb-editor" ng-change="vm().provider.events.languageChange()">
+			<select id="terratype_{{identifier}}_googlemapv3_language" ng-model="config().provider.language" class="umb-property-editor" ng-change="vm().provider.events.languageChange()">
 				<option value=""><localize key="terratypeGoogleMapsV3ConfigDefinition_languageUseDefault">[Use Umbraco]</localize></option>
 				<option value="ab"><localize key="terratypeGoogleMapsV3ConfigDefinition_languageAB">Abkhaz (аҧсуа бызшәа, аҧсшәа)</localize></option>
 				<option value="aa"><localize key="terratypeGoogleMapsV3ConfigDefinition_languageAA">Afar (Afaraf)</localize></option>

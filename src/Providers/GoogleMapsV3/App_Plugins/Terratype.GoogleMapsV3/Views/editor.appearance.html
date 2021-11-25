@@ -19,10 +19,10 @@
         <span style="color:red;padding-right:10px;"><localize key="terratypeGoogleMapsV3EditorAppearance_statusSearchFailed">Need to enable Google Places API Web Service</localize></span>
     </div>
 
-    <div ng-if="vm().status.success" class="umb-editor">
+    <div ng-if="vm().status.success" class="umb-property-editor">
         <div>
             <div ng-show="store().search.enable != 0 && config().search.enable != 0">
-                <input id="terratype_{{identifier}}_googlemapv3_lookup" class="umb-editor umb-textstring textstring" type="text" localize="placeholder" placeholder="@terratypeGoogleMapsV3EditorAppearance_searchPlaceholder" ng-model="store().lookup" spellcheck=false style="z-index:9998 !important;">
+                <input id="terratype_{{identifier}}_googlemapv3_lookup" class="umb-property-editor umb-textstring textstring" type="text" localize="placeholder" placeholder="@terratypeGoogleMapsV3EditorAppearance_searchPlaceholder" ng-model="store().lookup" spellcheck=false style="z-index:9998 !important;">
                 <style ng-bind-html="'.terratype_' + identifier + '_googlemapv3_lookup_results {position:static!important;}'">
                 </style>
                 <div id="terratype_{{identifier}}_googlemapv3_lookup_results" style="position:absolute;z-index:9999 !important"></div>
@@ -40,7 +40,7 @@
         </div>
         <div style="margin-top:-15px;">
             <div>
-                <input type="text" id="terratype_{{identifier}}_googlemapv3_location" class="umb-editor umb-textstring textstring" localize="placeholder" placeholder="@terratypeGoogleMapsV3EditorAppearance_locationPlaceholder" ng-model="vm().position.datumText" ng-change="vm().provider.events.datumChange(vm().position.datumText)" ng-style="vm().position.datumStyle" terratype-ignore-enter-key />
+                <input type="text" id="terratype_{{identifier}}_googlemapv3_location" class="umb-property-editor umb-textstring textstring" localize="placeholder" placeholder="@terratypeGoogleMapsV3EditorAppearance_locationPlaceholder" ng-model="vm().position.datumText" ng-change="vm().provider.events.datumChange(vm().position.datumText)" ng-style="vm().position.datumStyle" terratype-ignore-enter-key />
             </div>
         </div>
     </div>

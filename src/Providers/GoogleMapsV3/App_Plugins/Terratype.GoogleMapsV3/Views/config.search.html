@@ -6,7 +6,7 @@
         </small>
     </label>
     <div class="controls">
-        <select id="terratype_{{identifier}}_googlemapv3_search_enable" ng-model="config().search.enable" ng-change="vm().provider.events.searchChange()" class="umb-editor" convert-to-number>
+        <select id="terratype_{{identifier}}_googlemapv3_search_enable" ng-model="config().search.enable" ng-change="vm().provider.events.searchChange()" class="umb-property-editor" convert-to-number>
             <option value="0"><localize key="terratypeGoogleMapsV3ConfigSearch_typeDisable">Hide Search</localize></option>
             <option value="1"><localize key="terratypeGoogleMapsV3ConfigSearch_typeEnable">Enable Search</localize></option>
             <option value="2"><localize key="terratypeGoogleMapsV3ConfigSearch_typeAutocomplete">Enable Search with Autocomplete</localize></option>
@@ -30,7 +30,7 @@
         <div ng-show="vm().provider.version && vm().provider.versionMajor < 27">
             <small terratype-translate="terratypeGoogleMapsV3ConfigSearch_countryMax"></small>
         </div>
-        <select id="terratype_{{identifier}}_googlemapv3_searchcountry" ng-model="config().search.limit.countries" multiple class="umb-editor" style="height:250px;" ng-change="vm().provider.events.searchCountryChange()">
+        <select id="terratype_{{identifier}}_googlemapv3_searchcountry" ng-model="config().search.limit.countries" multiple class="umb-property-editor" style="height:250px;" ng-change="vm().provider.events.searchCountryChange()">
             <option value="AF"><localize key="terratypeGoogleMapsV3ConfigSearch_countryAF">Afghanistan</localize></option>
             <option value="AX"><localize key="terratypeGoogleMapsV3ConfigSearch_countryAX">Aland Islands</localize></option>
             <option value="AL"><localize key="terratypeGoogleMapsV3ConfigSearch_countryAL">Albania</localize></option>

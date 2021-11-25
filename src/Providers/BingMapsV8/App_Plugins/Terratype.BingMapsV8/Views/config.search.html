@@ -6,7 +6,7 @@
         </small>
     </label>
     <div class="controls">
-        <select id="terratype_{{identifier}}_bingmapsv8_search_enable" ng-model="config().search.enable" ng-change="vm().provider.events.searchChange()" class="umb-editor" convert-to-number>
+        <select id="terratype_{{identifier}}_bingmapsv8_search_enable" ng-model="config().search.enable" ng-change="vm().provider.events.searchChange()" class="umb-property-editor" convert-to-number>
             <option value="0"><localize key="terratypeBingMapsV8ConfigSearch_typeDisable">Hide Search</localize></option>
             <option value="1"><localize key="terratypeBingMapsV8ConfigSearch_typeEnable">Enable Search</localize></option>
             <option value="2"><localize key="terratypeBingMapsV8ConfigSearch_typeAutocomplete">Enable Search with Autocomplete</localize></option>

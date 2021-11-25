@@ -30,7 +30,7 @@
                         </small>
                     </label>
                     <div class="controls">
-                        <select id="terratype_{{identifier}}_leafletv1_mapSource_{{$index}}" ng-model="config().provider.mapSources[$index].mapSource.id" class="umb-editor" ng-options="p.id as p.name for p in vm().provider.events.mapSourceByCoordinateSystem[store().position.id] | orderBy: 'p.name'"></select>
+                        <select id="terratype_{{identifier}}_leafletv1_mapSource_{{$index}}" ng-model="config().provider.mapSources[$index].mapSource.id" class="umb-property-editor" ng-options="p.id as p.name for p in vm().provider.events.mapSourceByCoordinateSystem[store().position.id] | orderBy: 'p.name'"></select>
                         <div ng-show="l.mapSource.id">
                             <small ng-bind-html="vm().provider.events.mapSourceById[l.mapSource.id].description">
                             </small>
@@ -45,7 +45,7 @@
                         </small>
                     </label>
                     <div class="controls">
-                        <select id="terratype_{{identifier}}_leafletv1_tileServer_{{$index}}" ng-model="config().provider.mapSources[$index].tileServer.id" class="umb-editor" ng-options="p.id as p.name for p in vm().provider.events.tileServerByCoordinateSystemAndMapSource[store().position.id][l.mapSource.id] | orderBy: 'p.name'" ng-change="vm().provider.events.mapSourceMinZoomBind(null, $index);vm().provider.events.mapSourceMaxZoomBind(null, $index);vm().provider.events.mapSourceTestImageBind(vm().provider.events.tileServerById[l.tileServer.id].minZoom, $index)"></select>
+                        <select id="terratype_{{identifier}}_leafletv1_tileServer_{{$index}}" ng-model="config().provider.mapSources[$index].tileServer.id" class="umb-property-editor" ng-options="p.id as p.name for p in vm().provider.events.tileServerByCoordinateSystemAndMapSource[store().position.id][l.mapSource.id] | orderBy: 'p.name'" ng-change="vm().provider.events.mapSourceMinZoomBind(null, $index);vm().provider.events.mapSourceMaxZoomBind(null, $index);vm().provider.events.mapSourceTestImageBind(vm().provider.events.tileServerById[l.tileServer.id].minZoom, $index)"></select>
                         <div ng-show="l.tileServer.id && !vm().provider.events.tileServerByCoordinateSystemAndId[store().position.id + '.' + l.tileServer.id]">
                             <small style="color:red;">
                                 <localize key="terratypeLeafletV1ConfigDefinition_tileServerInvalidCoordinateSystem"></localize>
@@ -60,7 +60,7 @@
                         </small>
                     </label>
                     <div class="controls">
-                        <input id="terratype_{{identifier}}_leafletv1_key_{{$index}}" type="text" ng-model="config().provider.mapSources[$index].key" class="umb-editor umb-textstring textstring" placeholder="{{vm().provider.events.mapSourceById[l.mapSource.id].key.placeholder}}" spellcheck="false" />
+                        <input id="terratype_{{identifier}}_leafletv1_key_{{$index}}" type="text" ng-model="config().provider.mapSources[$index].key" class="umb-property-editor umb-textstring textstring" placeholder="{{vm().provider.events.mapSourceById[l.mapSource.id].key.placeholder}}" spellcheck="false" />
                         <div>
                             <div ng-bind-html="vm().provider.events.mapSourceById[l.mapSource.id].key.url">
                             </div>
@@ -79,7 +79,7 @@
                             <div>
                                 <input type="range" ng-model="vm().provider.mapSources[$index].minZoom" id="terratype_{{identifier}}_leafletv1_minZoom_{{$index}}" min="{{vm().provider.events.tileServerById[l.tileServer.id].minZoom}}" max="{{vm().provider.events.tileServerById[l.tileServer.id].maxZoom}}" style="float:left;" ng-change="vm().provider.events.mapSourceMinZoomBind(vm().provider.mapSources[$index].minZoom, $index);" ng-mousemove="vm().provider.events.mapSourceMinZoomBindIE('terratype_' + identifier + '_leafletv1_minZoom_' + $index, $index);">
                                 <div style="width:3em;float:left;margin-left:5px;">
-                                    <input type="number" ng-model="config().provider.mapSources[$index].minZoom" class="umb-editor" style="width:3em;" maxlength="2" ng-change="vm().provider.events.mapSourceMinZoomBind(config().provider.mapSources[$index].minZoom, $index);" />
+                                    <input type="number" ng-model="config().provider.mapSources[$index].minZoom" class="umb-property-editor" style="width:3em;" maxlength="2" ng-change="vm().provider.events.mapSourceMinZoomBind(config().provider.mapSources[$index].minZoom, $index);" />
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
@@ -101,7 +101,7 @@
                             <div>
                                 <input type="range" ng-model="vm().provider.mapSources[$index].maxZoom" id="terratype_{{identifier}}_leafletv1_maxZoom_{{$index}}" min="{{vm().provider.events.tileServerById[l.tileServer.id].minZoom}}" max="{{vm().provider.events.tileServerById[l.tileServer.id].maxZoom}}" style="float:left;" ng-change="vm().provider.events.mapSourceMaxZoomBind(vm().provider.mapSources[$index].maxZoom, $index);" ng-mousemove="vm().provider.events.mapSourceMaxZoomBindIE('terratype_' + identifier + '_leafletv1_maxZoom_' + $index, $index);">
                                 <div style="width:3em;float:left;margin-left:5px;">
-                                    <input type="number" ng-model="config().provider.mapSources[$index].maxZoom" class="umb-editor" style="width:3em;" maxlength="2" ng-change="vm().provider.events.mapSourceMaxZoomBind(config().provider.mapSources[$index].maxZoom, $index);" />
+                                    <input type="number" ng-model="config().provider.mapSources[$index].maxZoom" class="umb-property-editor" style="width:3em;" maxlength="2" ng-change="vm().provider.events.mapSourceMaxZoomBind(config().provider.mapSources[$index].maxZoom, $index);" />
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
