@@ -255,7 +255,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataEditors\ListView\ListViewConfigurationEditor.cs" />
-    <Compile Include="DataEditors\ListView\MapConverter.cs" />
     <Compile Include="DataEditors\ListView\TerratypeListViewPropertyEditor.cs" />
     <Compile Include="DataEditors\ListView\ListViewDataValueEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

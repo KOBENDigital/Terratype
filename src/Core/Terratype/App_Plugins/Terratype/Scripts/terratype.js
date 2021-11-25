@@ -591,7 +591,7 @@
 		$scope.store = null;
 		$scope.vm = null;
 		$scope.identifier = $scope.$id + (new Date().getTime());
-		$scope.model.value = $scope.model.config.definition;
+		$scope.model.value = $scope.model.value ? $scope.model.value : $scope.model.config.definition;
 
 		$scope.viewmodel = {
 			showMap: false,

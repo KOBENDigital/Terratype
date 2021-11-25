@@ -1,5 +1,4 @@
 ﻿using ClientDependency.Core;
-using Terratype.DataEditors.Map;
 using Umbraco.Core.Logging;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Web.PropertyEditors;
