@@ -19,17 +19,15 @@ namespace Terratype
 				var current = process.Pop();
 				var prop = current.GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
 				if (prop != null)
-				{
-					var attributes = prop.GetCustomAttributes(typeof(JsonPropertyAttribute), true);
-					if (attributes != null)
-					{
-						var attribute = attributes.First() as JsonPropertyAttribute;
-						if (attribute != null)
-						{
-							return attribute.PropertyName;
-						}
-					}
-				}
+        {
+          var attributes = prop.GetCustomAttributes(typeof(JsonPropertyAttribute), true);
+          {
+            if (attributes.FirstOrDefault() is JsonPropertyAttribute attribute)
+            {
+              return attribute.PropertyName;
+            }
+          }
+        }
 
 				if (current.BaseType != null)
 				{

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
+using Umbraco.Core.Composing;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Services;
@@ -37,10 +39,10 @@ namespace Terratype.DataEditors.Map
       bool preview)
     {
       if (source == null) return null;
-
-
-			var values = DataTypeService.GetDataType(propertyType.EditorAlias);
-      var config = JObject.Parse((string)values.Configuration);
+      var dataType      = DataTypeService.GetByEditorAlias(propertyType.EditorAlias).FirstOrDefault();
+      var propEditor    = Current.PropertyEditors.FirstOrDefault(x => x.Alias == propertyType.EditorAlias);
+      var configuration = propEditor?.GetConfigurationEditor().ToValueEditor(dataType?.Configuration);
+      var config        = configuration?.Values.FirstOrDefault() as JObject;
 
       JObject data;
       if (source is string val && !string.IsNullOrWhiteSpace(val))
@@ -74,7 +76,7 @@ namespace Terratype.DataEditors.Map
 
 
 		private void MergeJson(JObject data, JObject config, string fieldName) => 
-			data.Merge(new JObject(new JProperty(Json.PropertyName<IMap>(fieldName), config.GetValue(Json.PropertyName<IMap>(fieldName), StringComparison.InvariantCultureIgnoreCase))));
+			data.Merge(new JObject(new JProperty(Json.PropertyName<Terratype.Map>(fieldName), config.GetValue(Json.PropertyName<Terratype.Map>(fieldName), StringComparison.InvariantCultureIgnoreCase))));
   }
 }
 
